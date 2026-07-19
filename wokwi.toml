@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/music_box_controller_fw.elf'
+elf = 'build/music_box_controller_fw.elf'
