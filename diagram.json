@@ -9,8 +9,22 @@
       "top": 0,
       "left": 0,
       "attrs": { "env": "pico" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 96,
+      "left": 264,
+      "attrs": {
+        "color": "green",
+        "label": "BTN",
+        "key": "B"
+      }
     }
   ],
-  "connections": [],
+  "connections": [
+    [ "btn1:1.l", "pico:GP15", "green", [ "v0", "h-48" ] ],
+    [ "btn1:2.l", "pico:GND.4", "black", [ "v16", "h-184", "v-112" ] ]
+  ],
   "dependencies": {}
 }
