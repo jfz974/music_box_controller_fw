@@ -10,7 +10,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
-add_executable(music_box_controller_fw ../src/main.cpp)
+add_executable(music_box_controller_fw
+	../src/main.cpp
+	../src/button_matrix.cpp
+)
 target_link_libraries(music_box_controller_fw pico_stdlib)
 
 pico_enable_stdio_usb(music_box_controller_fw 1)
