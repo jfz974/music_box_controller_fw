@@ -15,7 +15,7 @@ int main() {
 	printf("4x4 matrix ready: cols GP2-5, rows GP6-9\r\n");
 
 	while (true) {
-		uint32_t state = button_matrix.read_state();
+		uint32_t state = button_matrix.read_debounced_state();
 		uint32_t new_presses = state & ~last_state;
 
 		for (uint row = 0; row < Matrix4x4::kRowCount; ++row) {

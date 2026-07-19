@@ -28,9 +28,33 @@ public:
 			gpio_set_dir(input_pins_[row], GPIO_IN);
 			gpio_pull_down(input_pins_[row]);
 		}
+
+		last_raw_state_ = scan_state();
+		debounced_state_ = last_raw_state_;
+		last_raw_change_time_ = get_absolute_time();
 	}
 
 	uint32_t read_state() {
+		return scan_state();
+	}
+
+	uint32_t read_debounced_state(uint debounce_ms = 20) {
+		uint32_t raw_state = scan_state();
+		absolute_time_t now = get_absolute_time();
+
+		if (raw_state != last_raw_state_) {
+			last_raw_state_ = raw_state;
+			last_raw_change_time_ = now;
+		} else if (raw_state != debounced_state_ &&
+			absolute_time_diff_us(last_raw_change_time_, now) >= static_cast<int64_t>(debounce_ms) * 1000) {
+			debounced_state_ = raw_state;
+		}
+
+		return debounced_state_;
+	}
+
+private:
+	uint32_t scan_state() {
 		uint32_t state = 0;
 
 		for (uint column = 0; column < kColumnCount; ++column) {
@@ -49,9 +73,11 @@ public:
 		return state;
 	}
 
-private:
 	std::array<uint, kColumnCount> output_pins_;
 	std::array<uint, kRowCount> input_pins_;
+	uint32_t last_raw_state_ = 0;
+	uint32_t debounced_state_ = 0;
+	absolute_time_t last_raw_change_time_{};
 };
 
 #endif
