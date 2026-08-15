@@ -4,6 +4,44 @@
 #include "pico/stdlib.h"
 #include "ws2812_strip.h"
 
+namespace {
+
+// Maps 0-255 to a color around the rainbow wheel.
+void wheel(uint8_t pos, uint8_t& r, uint8_t& g, uint8_t& b) {
+	pos = 255 - pos;
+	if (pos < 85) {
+		r = 255 - pos * 3;
+		g = 0;
+		b = pos * 3;
+	} else if (pos < 170) {
+		pos -= 85;
+		r = 0;
+		g = pos * 3;
+		b = 255 - pos * 3;
+	} else {
+		pos -= 170;
+		r = pos * 3;
+		g = 255 - pos * 3;
+		b = 0;
+	}
+}
+
+template <uint StripCount, uint PixelCount>
+void run_rainbow_chase(Ws2812Strip<PixelCount> (&strips)[StripCount], uint8_t step) {
+	for (uint strip_index = 0; strip_index < StripCount; ++strip_index) {
+		uint8_t strip_offset = static_cast<uint8_t>(strip_index * (256 / StripCount));
+		for (uint pixel = 0; pixel < PixelCount; ++pixel) {
+			uint8_t pos = static_cast<uint8_t>(pixel * (256 / PixelCount) + step + strip_offset);
+			uint8_t r, g, b;
+			wheel(pos, r, g, b);
+			strips[strip_index].set_pixel(pixel, r, g, b);
+		}
+		strips[strip_index].show();
+	}
+}
+
+} // namespace
+
 int main() {
 	const uint column_pins[4] = {2, 3, 4, 5};
 	const uint row_pins[4] = {6, 7, 8, 9};
@@ -25,6 +63,9 @@ int main() {
 	printf("4x4 matrix ready: cols GP2-5, rows GP6-9\r\n");
 	printf("3x WS2812 16-pixel strips ready: GP10, GP11, GP12\r\n");
 
+	uint8_t animation_step = 0;
+	absolute_time_t next_animation_time = get_absolute_time();
+
 	while (true) {
 		uint32_t state = button_matrix.read_debounced_state();
 		uint32_t new_presses = state & ~last_state;
@@ -39,6 +80,12 @@ int main() {
 		}
 
 		last_state = state;
+
+		if (absolute_time_diff_us(get_absolute_time(), next_animation_time) <= 0) {
+			run_rainbow_chase(led_strips, animation_step);
+			++animation_step;
+			next_animation_time = make_timeout_time_ms(30);
+		}
 
 		sleep_ms(5);
 	}
