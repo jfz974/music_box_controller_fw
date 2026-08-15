@@ -201,9 +201,39 @@
         "key": "V",
         "bounce": "0"
       }
+    },
+    {
+      "type": "wokwi-led-ring",
+      "id": "strip10",
+      "top": 20,
+      "left": 560,
+      "attrs": { "pixels": "16" }
+    },
+    {
+      "type": "wokwi-led-ring",
+      "id": "strip11",
+      "top": 180,
+      "left": 560,
+      "attrs": { "pixels": "16" }
+    },
+    {
+      "type": "wokwi-led-ring",
+      "id": "strip12",
+      "top": 340,
+      "left": 560,
+      "attrs": { "pixels": "16" }
     }
   ],
   "connections": [
+    [ "strip10:DIN", "pico:GP10", "green", [ "h-20" ] ],
+    [ "strip10:VCC", "pico:3V3", "red", [ "h-40" ] ],
+    [ "strip10:GND", "pico:GND.1", "black", [ "h-60" ] ],
+    [ "strip11:DIN", "pico:GP11", "green", [ "h-20" ] ],
+    [ "strip11:VCC", "pico:3V3", "red", [ "h-40" ] ],
+    [ "strip11:GND", "pico:GND.2", "black", [ "h-60" ] ],
+    [ "strip12:DIN", "pico:GP12", "green", [ "h-20" ] ],
+    [ "strip12:VCC", "pico:3V3", "red", [ "h-40" ] ],
+    [ "strip12:GND", "pico:GND.3", "black", [ "h-60" ] ],
     [ "btn00:1.l", "pico:GP6", "green", [ "h-88", "v-12", "h-44" ] ],
     [ "btn10:1.l", "pico:GP7", "blue", [ "h-88", "v-12", "h-44" ] ],
     [ "btn20:1.l", "pico:GP8", "yellow", [ "h-88", "v-12", "h-44" ] ],
