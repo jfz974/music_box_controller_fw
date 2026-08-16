@@ -47,3 +47,23 @@ Current `src/button_matrix.h` implementation drives columns push-pull (`GPIO_OUT
 | STRIP_2 | GP14 | TBD |
 
 `src/main.cpp` currently instantiates all three as generic 16-pixel `Ws2812Strip<16>` — this needs updating to reflect the real signal names/pixel counts above once finalized.
+
+### SW_LED_CTRL pixel layout (64 pixels around the 4x4 matrix)
+
+Each button has 4 dedicated corner pixels — top-left/bottom-left from the gap to its left, bottom-right/top-right from the gap to its right — never shared with the neighboring button, even though physically adjacent. Each column owns a private, contiguous block of 16 indices (col0 = D0-15, col1 = D16-31, col2 = D32-47, col3 = D48-63). Within a column's block the chain snakes down the left-hand gap (rows 0→3) then back up the right-hand gap (rows 3→0), then continues straight into the next column's block. The physical chain order is simply D0→D63.
+
+For row `r` (0-3) and column `c` (0-3), with block start `B = 16 * c`:
+
+- `TL = B + 2r`
+- `BL = B + 2r + 1`
+- `BR = B + 14 - 2r`
+- `TR = B + 15 - 2r`
+
+| | C0 | C1 | C2 | C3 |
+|---|---|---|---|---|
+| R0 | 0,1,14,15 | 16,17,30,31 | 32,33,46,47 | 48,49,62,63 |
+| R1 | 2,3,12,13 | 18,19,28,29 | 34,35,44,45 | 50,51,60,61 |
+| R2 | 4,5,10,11 | 20,21,26,27 | 36,37,42,43 | 52,53,58,59 |
+| R3 | 6,7,8,9 | 22,23,24,25 | 38,39,40,41 | 54,55,56,57 |
+
+(cell order is `TL, BL, BR, TR`)
