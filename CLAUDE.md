@@ -25,10 +25,16 @@ cmake --build build
 
 | Signal | GPIO | Direction | Electrical notes |
 |---|---|---|---|
-| SW_C0-SW_C3 | GP18, GP19, GP20, GP21 | Output | Open-collector — driven low to scan, high-Z otherwise |
-| SW_L0-SW_L3 | GP22, GP26, GP27, GP28 | Input | Externally pulled up on the board |
+| SW_C0 | GP27 | Output | Open-collector — driven low to scan, high-Z otherwise |
+| SW_C1 | GP21 | Output | Open-collector — driven low to scan, high-Z otherwise |
+| SW_C2 | GP20 | Output | Open-collector — driven low to scan, high-Z otherwise |
+| SW_C3 | GP17 | Output | Open-collector — driven low to scan, high-Z otherwise |
+| SW_L0 | GP26 | Input | Externally pulled up on the board |
+| SW_L1 | GP22 | Input | Externally pulled up on the board |
+| SW_L2 | GP19 | Input | Externally pulled up on the board |
+| SW_L3 | GP18 | Input | Externally pulled up on the board |
 
-GPIO23-25 are skipped in the range because they're reserved on the Pico W (SPI/onboard LED).
+GPIO23-25 are skipped because they're reserved on the Pico W (SPI/onboard LED); GP28 is used by `SW_LED_CTRL` instead of the matrix.
 
 Current `src/button_matrix.h` implementation drives columns push-pull (`GPIO_OUT` + `gpio_put`) and pulls rows down internally (`gpio_pull_down`), which is the inverse polarity of the schematic (open-collector columns + externally pulled-up rows). This is a known divergence to reconcile when the real board is wired up — the matrix scan logic will need columns idle high-Z (or driven high) and rows read active-low.
 
@@ -36,8 +42,8 @@ Current `src/button_matrix.h` implementation drives columns push-pull (`GPIO_OUT
 
 | Signal | GPIO | Pixel count |
 |---|---|---|
-| SW_LED_CTRL | GP10 | 64 LEDs (switch matrix backlighting) |
-| STRIP_1 | GP11 | TBD |
-| STRIP_2 | GP12 | TBD |
+| SW_LED_CTRL | GP28 | 64 LEDs (switch matrix backlighting) |
+| STRIP_1 | GP15 | TBD |
+| STRIP_2 | GP14 | TBD |
 
 `src/main.cpp` currently instantiates all three as generic 16-pixel `Ws2812Strip<16>` — this needs updating to reflect the real signal names/pixel counts above once finalized.

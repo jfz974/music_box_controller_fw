@@ -43,8 +43,8 @@ void run_rainbow_chase(Ws2812Strip<PixelCount> (&strips)[StripCount], uint8_t st
 } // namespace
 
 int main() {
-	const uint column_pins[4] = {18, 19, 20, 21};
-	const uint row_pins[4] = {22, 26, 27, 28};
+	const uint column_pins[4] = {27, 21, 20, 17}; // SW_C0, SW_C1, SW_C2, SW_C3
+	const uint row_pins[4] = {26, 22, 19, 18}; // SW_L0, SW_L1, SW_L2, SW_L3
 	uint32_t last_state = 0;
 	using Matrix4x4 = ButtonMatrix<4, 4>;
 
@@ -52,16 +52,16 @@ int main() {
 	Matrix4x4 button_matrix(column_pins, row_pins);
 
 	Ws2812Strip<16> led_strips[3] = {
-		Ws2812Strip<16>(10),
-		Ws2812Strip<16>(11),
-		Ws2812Strip<16>(12),
+		Ws2812Strip<16>(28), // SW_LED_CTRL
+		Ws2812Strip<16>(15), // STRIP_1
+		Ws2812Strip<16>(14), // STRIP_2
 	};
 	for (auto& strip : led_strips) {
 		strip.show();
 	}
 
-	printf("4x4 matrix ready: cols GP18-21, rows GP22,26-28\r\n");
-	printf("3x WS2812 16-pixel strips ready: GP10, GP11, GP12\r\n");
+	printf("4x4 matrix ready: SW_C0=GP27 SW_C1=GP21 SW_C2=GP20 SW_C3=GP17, SW_L0=GP26 SW_L1=GP22 SW_L2=GP19 SW_L3=GP18\r\n");
+	printf("3x WS2812 16-pixel strips ready: SW_LED_CTRL=GP28, STRIP_1=GP15, STRIP_2=GP14\r\n");
 
 	uint8_t animation_step = 0;
 	absolute_time_t next_animation_time = get_absolute_time();
