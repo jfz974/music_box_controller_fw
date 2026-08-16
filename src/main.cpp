@@ -43,8 +43,8 @@ void run_rainbow_chase(Ws2812Strip<PixelCount> (&strips)[StripCount], uint8_t st
 } // namespace
 
 int main() {
-	const uint column_pins[4] = {2, 3, 4, 5};
-	const uint row_pins[4] = {6, 7, 8, 9};
+	const uint column_pins[4] = {18, 19, 20, 21};
+	const uint row_pins[4] = {22, 26, 27, 28};
 	uint32_t last_state = 0;
 	using Matrix4x4 = ButtonMatrix<4, 4>;
 
@@ -60,7 +60,7 @@ int main() {
 		strip.show();
 	}
 
-	printf("4x4 matrix ready: cols GP2-5, rows GP6-9\r\n");
+	printf("4x4 matrix ready: cols GP18-21, rows GP22,26-28\r\n");
 	printf("3x WS2812 16-pixel strips ready: GP10, GP11, GP12\r\n");
 
 	uint8_t animation_step = 0;
