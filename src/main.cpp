@@ -2,6 +2,7 @@
 
 #include "button_matrix.h"
 #include "pico/stdlib.h"
+#include "switch_led_controller.h"
 #include "ws2812_strip.h"
 
 namespace {
@@ -51,8 +52,14 @@ int main() {
 	stdio_init_all();
 	Matrix4x4 button_matrix(column_pins, row_pins);
 
-	Ws2812Strip<16> led_strips[3] = {
-		Ws2812Strip<16>(28), // SW_LED_CTRL
+	Ws2812Strip<64> sw_led_ctrl(28); // SW_LED_CTRL
+	SwitchLedController<4, 4> switch_leds(sw_led_ctrl);
+	switch_leds.set_row_color(0, RgbColor{0, 255, 0});   // R0 switches are green
+	switch_leds.set_row_color(1, RgbColor{0, 0, 255});   // R1 switches are blue
+	switch_leds.set_row_color(2, RgbColor{255, 255, 0}); // R2 switches are yellow
+	switch_leds.set_row_color(3, RgbColor{255, 0, 0});   // R3 switches are red
+
+	Ws2812Strip<16> led_strips[2] = {
 		Ws2812Strip<16>(15), // STRIP_1
 		Ws2812Strip<16>(14), // STRIP_2
 	};
@@ -61,7 +68,7 @@ int main() {
 	}
 
 	printf("4x4 matrix ready: SW_C0=GP27 SW_C1=GP21 SW_C2=GP20 SW_C3=GP17, SW_L0=GP26 SW_L1=GP22 SW_L2=GP19 SW_L3=GP18\r\n");
-	printf("3x WS2812 16-pixel strips ready: SW_LED_CTRL=GP28, STRIP_1=GP15, STRIP_2=GP14\r\n");
+	printf("SW_LED_CTRL ready: GP28 (64 pixels); STRIP_1=GP15, STRIP_2=GP14\r\n");
 
 	uint8_t animation_step = 0;
 	absolute_time_t next_animation_time = get_absolute_time();
@@ -80,6 +87,7 @@ int main() {
 		}
 
 		last_state = state;
+		switch_leds.update(state);
 
 		if (absolute_time_diff_us(get_absolute_time(), next_animation_time) <= 0) {
 			run_rainbow_chase(led_strips, animation_step);

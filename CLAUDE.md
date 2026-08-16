@@ -16,6 +16,7 @@ cmake --build build
 - `src/main.cpp` — entry point, wires up the button matrix and LED strips.
 - `src/button_matrix.h` — `ButtonMatrix<ColumnCount, RowCount>` template, scans the matrix and returns a debounced bitfield.
 - `src/ws2812_strip.h` / `src/ws2812.pio` — `Ws2812Strip<PixelCount>` PIO-driven WS2812 strip driver.
+- `src/switch_led_controller.h` — `SwitchLedController<ColumnCount, RowCount>`, drives `SW_LED_CTRL` from the button matrix's debounced bitfield (see behavior below).
 - `project/CMakeLists.txt` — build target.
 - `diagram.json` — Wokwi simulation wiring. **Not auto-linked to the firmware** — GPIO numbers are duplicated as string literals (`"pico:GP18"`) here and as int literals in `main.cpp`. When pins change in one, update the other by hand.
 
@@ -46,7 +47,7 @@ Current `src/button_matrix.h` implementation drives columns push-pull (`GPIO_OUT
 | STRIP_1 | GP15 | TBD |
 | STRIP_2 | GP14 | TBD |
 
-`src/main.cpp` currently instantiates all three as generic 16-pixel `Ws2812Strip<16>` — this needs updating to reflect the real signal names/pixel counts above once finalized.
+`src/main.cpp` instantiates `SW_LED_CTRL` as `Ws2812Strip<64>` (driven through `SwitchLedController`). `STRIP_1`/`STRIP_2` are still generic placeholder `Ws2812Strip<16>` — update once their real pixel counts are finalized.
 
 ### SW_LED_CTRL pixel layout (64 pixels around the 4x4 matrix)
 
@@ -67,3 +68,18 @@ For row `r` (0-3) and column `c` (0-3), with block start `B = 16 * c`:
 | R3 | 6,7,8,9 | 22,23,24,25 | 38,39,40,41 | 54,55,56,57 |
 
 (cell order is `TL, BL, BR, TR`)
+
+### SW_LED_CTRL behavior
+
+The 4 pixels around a switch always move together as one group. Group color is per-row (defaults match that row's switch color: R0 green, R1 blue, R2 yellow, R3 red) and is editable at runtime via `SwitchLedController::set_row_color(row, RgbColor)`.
+
+Each group has 4 intensity levels (brightness scale of the row color):
+
+| Intensity | Scale |
+|---|---|
+| Off | 0% |
+| Passive | 20% |
+| Active | 50% |
+| Flash | 100% |
+
+Default/idle state is Passive. On press, a group jumps to Flash, holds for `flash_duration_ms` (default 120ms, `set_flash_duration_ms`), then drops to Active for as long as the switch stays held. Release — at any point, even mid-flash — returns the group to Passive immediately. `Off` is not driven automatically; it's available for manual overrides via `set_group_intensity(row, column, LedIntensity::kOff)`.
