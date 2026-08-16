@@ -220,385 +220,449 @@
       "type": "wokwi-neopixel",
       "id": "d0",
       "top": 20,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d1",
       "top": 70,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d2",
       "top": 130,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d3",
       "top": 180,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d4",
       "top": 240,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d5",
       "top": 290,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d6",
       "top": 350,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d7",
       "top": 400,
-      "left": 250
+      "left": 250,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d8",
       "top": 400,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d9",
       "top": 350,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d10",
       "top": 290,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d11",
       "top": 240,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d12",
       "top": 180,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d13",
       "top": 130,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d14",
       "top": 70,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d15",
       "top": 20,
-      "left": 330
+      "left": 330,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d16",
       "top": 20,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d17",
       "top": 70,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d18",
       "top": 130,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d19",
       "top": 180,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d20",
       "top": 240,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d21",
       "top": 290,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d22",
       "top": 350,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d23",
       "top": 400,
-      "left": 370
+      "left": 370,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d24",
       "top": 400,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d25",
       "top": 350,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d26",
       "top": 290,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d27",
       "top": 240,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d28",
       "top": 180,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d29",
       "top": 130,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d30",
       "top": 70,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d31",
       "top": 20,
-      "left": 450
+      "left": 450,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d32",
       "top": 20,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d33",
       "top": 70,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d34",
       "top": 130,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d35",
       "top": 180,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d36",
       "top": 240,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d37",
       "top": 290,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d38",
       "top": 350,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d39",
       "top": 400,
-      "left": 490
+      "left": 490,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d40",
       "top": 400,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d41",
       "top": 350,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d42",
       "top": 290,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d43",
       "top": 240,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d44",
       "top": 180,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d45",
       "top": 130,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d46",
       "top": 70,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d47",
       "top": 20,
-      "left": 570
+      "left": 570,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d48",
       "top": 20,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d49",
       "top": 70,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d50",
       "top": 130,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d51",
       "top": 180,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d52",
       "top": 240,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d53",
       "top": 290,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d54",
       "top": 350,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d55",
       "top": 400,
-      "left": 610
+      "left": 610,
+      "rotate": 270
     },
     {
       "type": "wokwi-neopixel",
       "id": "d56",
       "top": 400,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d57",
       "top": 350,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d58",
       "top": 290,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d59",
       "top": 240,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d60",
       "top": 180,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d61",
       "top": 130,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d62",
       "top": 70,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     },
     {
       "type": "wokwi-neopixel",
       "id": "d63",
       "top": 20,
-      "left": 690
+      "left": 690,
+      "rotate": 90
     }
   ],
   "connections": [
