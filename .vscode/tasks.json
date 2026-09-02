@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "${workspaceFolder}/build"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": ["$gcc"]
+		},
+		{
+			"label": "Run Project (USB)",
+			"type": "shell",
+			// Path is version-pinned to the picotool the Pico SDK toolchain installed
+			// (pico_sdk_version.cmake currently pins SDK 2.3.0, which pulled picotool 2.3.0
+			// alongside it) -- update the version segment if that ever changes.
+			"command": "${userHome}/.pico-sdk/picotool/2.3.0/picotool/picotool.exe",
+			"args": ["load", "-f", "-x", "${workspaceFolder}/build/music_box_controller_fw.elf"],
+			"dependsOn": ["Build"],
+			"problemMatcher": [],
+			"detail": "Flash and execute over USB. The board must be in BOOTSEL mode (hold BOOTSEL while plugging in) -- the current USB descriptors are vendor-only and don't include a reset interface, so picotool can't force a running device into the bootloader remotely yet.",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		}
+	]
+}

@@ -3,6 +3,7 @@
 #include "button_matrix.h"
 #include "pico/stdlib.h"
 #include "switch_led_controller.h"
+#include "usb_vendor_device.h"
 #include "ws2812_strip.h"
 
 namespace {
@@ -50,6 +51,7 @@ int main() {
 	using Matrix4x4 = ButtonMatrix<4, 4>;
 
 	stdio_init_all();
+	usb_vendor_device::init();
 	Matrix4x4 button_matrix(column_pins, row_pins);
 
 	Ws2812Strip<64> sw_led_ctrl(28); // SW_LED_CTRL
@@ -74,6 +76,8 @@ int main() {
 	absolute_time_t next_animation_time = get_absolute_time();
 
 	while (true) {
+		usb_vendor_device::task();
+
 		uint32_t state = button_matrix.read_debounced_state();
 		uint32_t new_presses = state & ~last_state;
 

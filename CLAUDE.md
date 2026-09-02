@@ -13,12 +13,24 @@ cmake --build build
 
 ## Layout
 
-- `src/main.cpp` — entry point, wires up the button matrix and LED strips.
+- `src/main.cpp` — entry point, wires up the button matrix, LED strips, and the USB vendor device.
 - `src/button_matrix.h` — `ButtonMatrix<ColumnCount, RowCount>` template, scans the matrix and returns a debounced bitfield.
 - `src/ws2812_strip.h` / `src/ws2812.pio` — `Ws2812Strip<PixelCount>` PIO-driven WS2812 strip driver.
 - `src/switch_led_controller.h` — `SwitchLedController<ColumnCount, RowCount>`, drives `SW_LED_CTRL` from the button matrix's debounced bitfield (see behavior below).
+- `src/tusb_config.h` — TinyUSB build config: vendor class only (no CDC/MSC/HID/MIDI).
+- `src/usb_descriptors.c` / `src/usb_descriptors.h` — device/config/string descriptors, plus the BOS descriptor and MS OS 2.0 descriptor set that make Windows bind `winusb.sys` automatically (no INF needed). See USB vendor device section below.
+- `src/usb_vendor_device.h` / `src/usb_vendor_device.cpp` — thin init()/task() wrapper around the TinyUSB device stack, plus the mandatory `tud_*_cb` callbacks (mount/umount/suspend/resume, vendor control transfer, vendor bulk echo).
 - `project/CMakeLists.txt` — build target.
 - `diagram.json` — Wokwi simulation wiring. **Not auto-linked to the firmware** — GPIO numbers are duplicated as string literals (`"pico:GP18"`) here and as int literals in `main.cpp`. When pins change in one, update the other by hand.
+
+## USB vendor device
+
+The device exposes a single USB vendor-specific (WinUSB) interface — no CDC, so `printf`/stdio no longer goes over USB; it goes out UART instead (`pico_enable_stdio_uart` is on, `pico_enable_stdio_usb` is off in `project/CMakeLists.txt`).
+
+- BOS descriptor advertises one MS OS 2.0 platform capability (`desc_bos` in `src/usb_descriptors.c`), which points Windows at the `desc_ms_os_20` descriptor set for the vendor code request (`kVendorRequestMicrosoft`, handled in `tud_vendor_control_xfer_cb` in `src/usb_vendor_device.cpp`).
+- The MS OS 2.0 descriptor set marks the vendor interface WinUSB-compatible and registers a `DeviceInterfaceGUIDs` registry property, so Windows binds `winusb.sys` with no INF file and the device is discoverable from a Win32 app via `SetupDi*`/`CM_*` using that GUID.
+- `idVendor`/`idProduct` in `src/usb_descriptors.c` are placeholders (TinyUSB's shared open-source test VID) — replace with values you're licensed to use before shipping. The `DeviceInterfaceGUIDs` GUID in `desc_ms_os_20` is also a placeholder generated for this repo — regenerate it if you fork the firmware.
+- The vendor bulk endpoints currently just echo whatever they receive (`tud_vendor_rx_cb`) — proves the data path works; real command/protocol handling is a follow-up.
 
 ## Schematic pinout naming
 
