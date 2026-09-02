@@ -82,4 +82,4 @@ Each group has 4 intensity levels (brightness scale of the row color):
 | Active | 50% |
 | Flash | 100% |
 
-Default/idle state is Passive. On press, a group jumps to Flash, holds for `flash_duration_ms` (default 120ms, `set_flash_duration_ms`), then drops to Active for as long as the switch stays held. Release — at any point, even mid-flash — returns the group to Passive immediately. `Off` is not driven automatically; it's available for manual overrides via `set_group_intensity(row, column, LedIntensity::kOff)`.
+Default/idle state is Passive. On press, a group jumps instantly to Flash (100%), then follows an exponential release curve down to Active (50%) over `release_duration_ms` (default 120ms, `set_release_duration_ms`), settling at Active for as long as the switch stays held. Release — at any point, even mid-curve — returns the group to Passive immediately (no curve). `Off` is not driven automatically; it's available for manual overrides via `set_group_intensity(row, column, LedIntensity::kOff)`.

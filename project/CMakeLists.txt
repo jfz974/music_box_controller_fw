@@ -15,6 +15,7 @@ add_executable(music_box_controller_fw
 )
 target_link_libraries(music_box_controller_fw pico_stdlib hardware_pio)
 pico_generate_pio_header(music_box_controller_fw ../src/ws2812.pio)
+pico_add_extra_outputs(music_box_controller_fw)
 
 pico_enable_stdio_usb(music_box_controller_fw 1)
 pico_enable_stdio_uart(music_box_controller_fw 0)
