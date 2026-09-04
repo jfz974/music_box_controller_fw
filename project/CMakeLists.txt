@@ -11,7 +11,10 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 add_executable(music_box_controller_fw
+	../src/led_mode_request.cpp
 	../src/main.cpp
+	../src/osc_commands.cpp
+	../src/osc_message.cpp
 	../src/usb_descriptors.c
 	../src/usb_vendor_device.cpp
 )

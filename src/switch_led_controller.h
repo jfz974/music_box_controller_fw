@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdint>
 
+#include "led_pixel_layout.h"
 #include "pico/stdlib.h"
 #include "ws2812_strip.h"
 
@@ -21,9 +22,10 @@ struct RgbColor {
 	uint8_t b = 0;
 };
 
-// Drives SW_LED_CTRL: the 4 pixels around each switch (see CLAUDE.md pixel
-// layout) move together as one group, colored per row and dimmed per an
-// LedIntensity state driven by that switch's press/release edges.
+// Drives SW_LED_CTRL: the 4 pixels around each switch (see
+// led_pixel_layout.h / CLAUDE.md pixel layout) move together as one group,
+// colored per row and dimmed per an LedIntensity state driven by that
+// switch's press/release edges.
 //
 // On press a group jumps instantly to Flash (100%), then follows an
 // exponential release curve down to Active (50%) over release_duration_ms.
@@ -93,17 +95,6 @@ public:
 	}
 
 private:
-	// Pixel indices of the 4 corner LEDs around switch (row, column). Column
-	// owns a private 16-pixel block; see CLAUDE.md for the derivation.
-	static std::array<uint, 4> pixel_indices(uint row, uint column) {
-		uint block_start = 16 * column;
-		uint top_left = block_start + 2 * row;
-		uint bottom_left = block_start + 2 * row + 1;
-		uint bottom_right = block_start + 14 - 2 * row;
-		uint top_right = block_start + 15 - 2 * row;
-		return {top_left, bottom_left, bottom_right, top_right};
-	}
-
 	// Off/Passive/Active are flat levels. Flash decays exponentially toward
 	// Active over release_duration_ms, then settles into the Active state.
 	float resolve_scale(uint index, absolute_time_t now) {
@@ -135,7 +126,7 @@ private:
 				uint8_t g = static_cast<uint8_t>(color.g * scale);
 				uint8_t b = static_cast<uint8_t>(color.b * scale);
 
-				for (uint pixel : pixel_indices(row, column)) {
+				for (uint pixel : led_group_pixel_indices(row, column)) {
 					strip_.set_pixel(pixel, r, g, b);
 				}
 			}

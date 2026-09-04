@@ -1,32 +1,15 @@
 #include <stdio.h>
 
 #include "button_matrix.h"
+#include "color_wheel.h"
+#include "led_mode.h"
+#include "led_mode_controller.h"
+#include "led_mode_request.h"
 #include "pico/stdlib.h"
-#include "switch_led_controller.h"
 #include "usb_vendor_device.h"
 #include "ws2812_strip.h"
 
 namespace {
-
-// Maps 0-255 to a color around the rainbow wheel.
-void wheel(uint8_t pos, uint8_t& r, uint8_t& g, uint8_t& b) {
-	pos = 255 - pos;
-	if (pos < 85) {
-		r = 255 - pos * 3;
-		g = 0;
-		b = pos * 3;
-	} else if (pos < 170) {
-		pos -= 85;
-		r = 0;
-		g = pos * 3;
-		b = 255 - pos * 3;
-	} else {
-		pos -= 170;
-		r = pos * 3;
-		g = 255 - pos * 3;
-		b = 0;
-	}
-}
 
 template <uint StripCount, uint PixelCount>
 void run_rainbow_chase(Ws2812Strip<PixelCount> (&strips)[StripCount], uint8_t step) {
@@ -35,7 +18,7 @@ void run_rainbow_chase(Ws2812Strip<PixelCount> (&strips)[StripCount], uint8_t st
 		for (uint pixel = 0; pixel < PixelCount; ++pixel) {
 			uint8_t pos = static_cast<uint8_t>(pixel * (256 / PixelCount) + step + strip_offset);
 			uint8_t r, g, b;
-			wheel(pos, r, g, b);
+			color_wheel(pos, r, g, b);
 			strips[strip_index].set_pixel(pixel, r, g, b);
 		}
 		strips[strip_index].show();
@@ -55,11 +38,11 @@ int main() {
 	Matrix4x4 button_matrix(column_pins, row_pins);
 
 	Ws2812Strip<64> sw_led_ctrl(28); // SW_LED_CTRL
-	SwitchLedController<4, 4> switch_leds(sw_led_ctrl);
-	switch_leds.set_row_color(0, RgbColor{0, 255, 0});   // R0 switches are green
-	switch_leds.set_row_color(1, RgbColor{0, 0, 255});   // R1 switches are blue
-	switch_leds.set_row_color(2, RgbColor{255, 255, 0}); // R2 switches are yellow
-	switch_leds.set_row_color(3, RgbColor{255, 0, 0});   // R3 switches are red
+	LedModeController<4, 4> led_mode(sw_led_ctrl); // starts in test mode; see docs/osc/led-mode.md
+	led_mode.set_row_color(0, RgbColor{0, 255, 0});   // R0 switches are green
+	led_mode.set_row_color(1, RgbColor{0, 0, 255});   // R1 switches are blue
+	led_mode.set_row_color(2, RgbColor{255, 255, 0}); // R2 switches are yellow
+	led_mode.set_row_color(3, RgbColor{255, 0, 0});   // R3 switches are red
 
 	Ws2812Strip<16> led_strips[2] = {
 		Ws2812Strip<16>(15), // STRIP_1
@@ -78,20 +61,30 @@ int main() {
 	while (true) {
 		usb_vendor_device::task();
 
+		LedMode requested_mode;
+		if (led_mode_request::take(requested_mode)) {
+			led_mode.set_mode(requested_mode);
+		}
+
 		uint32_t state = button_matrix.read_debounced_state();
 		uint32_t new_presses = state & ~last_state;
+		uint32_t new_releases = ~state & last_state;
 
 		for (uint row = 0; row < Matrix4x4::kRowCount; ++row) {
 			for (uint column = 0; column < Matrix4x4::kColumnCount; ++column) {
-				uint32_t mask = 1u << (row * Matrix4x4::kColumnCount + column);
+				uint8_t index = static_cast<uint8_t>(row * Matrix4x4::kColumnCount + column);
+				uint32_t mask = 1u << index;
 				if ((new_presses & mask) != 0) {
 					printf("matrix[%u][%u]\r\n", row, column);
+					usb_vendor_device::push_button_event(index, true);
+				} else if ((new_releases & mask) != 0) {
+					usb_vendor_device::push_button_event(index, false);
 				}
 			}
 		}
 
 		last_state = state;
-		switch_leds.update(state);
+		led_mode.update(state);
 
 		if (absolute_time_diff_us(get_absolute_time(), next_animation_time) <= 0) {
 			run_rainbow_chase(led_strips, animation_step);
